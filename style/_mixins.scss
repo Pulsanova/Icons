@@ -1,0 +1,172 @@
+@use './variables' as *;
+@use 'sass:meta';
+@use 'sass:list';
+@use 'sass:map';
+
+//
+// - Placeholders
+//
+
+/// Provide the base code for using the icon font.
+%icon-font {
+    /* stylelint-disable font-family-no-missing-generic-family-keyword */
+    // stylelint-disable-next-line declaration-no-important -- To prevent issues with browser extensions that change fonts.
+    font-family: Phosphor !important;
+    font-style: normal;
+    line-height: 1;
+    font-variant: normal;
+    speak: never;
+    text-transform: none;
+    text-rendering: auto;
+    word-wrap: normal;
+    white-space: nowrap;
+
+    // - Enable Ligatures.
+    // stylelint-disable-next-line order/properties-order
+    letter-spacing: 0;
+    font-feature-settings: 'liga' 1;
+    font-variant-ligatures: discretionary-ligatures;
+
+    // - Improve font rendering.
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* stylelint-enable font-family-no-missing-generic-family-keyword */
+}
+
+%icon-font-duotone {
+    /* stylelint-disable font-family-no-missing-generic-family-keyword */
+    // stylelint-disable-next-line declaration-no-important -- To prevent issues with browser extensions that change fonts.
+    font-family: Phosphor-Duotone !important;
+    font-weight: 400;
+    font-style: normal;
+    line-height: 1;
+    font-variant: normal;
+    text-transform: none;
+    speak: never;
+
+    // - Improve font rendering.
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* stylelint-enable font-family-no-missing-generic-family-keyword */
+}
+
+//
+// - Functions
+//
+
+/// Retrieves the code linked to the name of an icon.
+///
+/// @example scss
+///     icon-code('plus');
+///     // => '\e3d4'
+///
+/// @link https://phosphoricons.com/ For the list of supported codes.
+///
+/// @param  {String} $icon The name of an icon
+/// @return {String}       Icon code if found, the name as is if not.
+///
+@function code($icon) {
+    @if map.has-key($list, $icon) {
+        @return map.get($list, $icon);
+    }
+    @if map.has-key($brand-list, $icon) {
+        @return map.get($brand-list, $icon);
+    }
+    @return $icon;
+}
+
+//
+// - Mixins
+//
+
+/// Helper to add an icon as a `::before` or `::after` pseudo-element.
+///
+/// @param  {String}  $icon          The name of the icon (e.g. `plus`)
+/// @param  {String}  $variant       The variant to use ("fill", "bold", "regular" (default), "light", "thin" or "duotone")
+/// @param  {Boolean} $after [false] If `true` the icon will be added after, otherwise before.
+///                                  If the variant is not duotone, the `::before` or `::after` pseudo-elements
+///                                  will be used according to this parameter, otherwise the icon will be placed
+///                                  in the right place, but both pseudo-elements will be used.
+/// @content                         Any other properties to be added to the pseudo-element.
+/// @output                          The selected pseudo-element with the requested icon, ready to be displayed.
+@mixin icon($icon, $variant: 'regular', $after: false) {
+    $weight: 400;
+
+    @if (meta.type-of($variant) == bool) {
+        $after: $variant;
+        $variant: 'regular';
+    }
+
+    @if ($variant != 'duotone') {
+        $variant-map: ( fill: 900, bold: 800, regular: 400, light: 300, thin: 100 );
+        @if (map.has-key($variant-map, $variant)) {
+            $weight: map.get($variant-map, $variant);
+        } @else {
+            @warn 'Invalid icon variant: #{$variant}';
+        }
+    } @else if (map.has-key($duotone-list, $icon) == false) {
+        @error 'The #{$icon} icon does not exist in duotone icons.';
+    }
+
+    @if ($variant == 'duotone') {
+        position: relative;
+
+        // @if ($after) {
+        //     padding-right: 1.25em;
+        // } @else {
+        //     padding-left: 1.25em;
+        // }
+
+        &::before {
+            color: $duotone-secondary-color;
+            opacity: $duotone-secondary-opacity;
+        }
+
+        &::after {
+            margin-left: -1em;
+            color: $duotone-primary-color;
+        }
+    }
+
+    @each $pseudoElement in ('before', 'after') {
+        $should-add-pseudo-element: (
+            ($variant == 'duotone') or
+            ($pseudoElement == 'before' and $after == false) or
+            ($pseudoElement == 'after' and $after)
+        );
+
+        $icon-code: code($icon);
+        @if ($variant == 'duotone') {
+            $icon-code: list.nth(
+                map.get($duotone-list, $icon),
+                if($pseudoElement == 'before', 1, 2)
+            );
+        }
+
+        @if ($should-add-pseudo-element) {
+            &::#{$pseudoElement} {
+                @if ($variant == 'duotone') {
+                    @extend %icon-font-duotone;
+
+                    // position: absolute;
+                    // top: 50%;
+                    // width: 1.25em;
+                    // text-align: center;
+                    // transform: translateY(-50%);
+
+                    @if ($after) {
+                        right: 0;
+                    } @else {
+                        left: 0;
+                    }
+                } @else {
+                    @extend %icon-font;
+                }
+
+                content: $icon-code;
+                font-weight: $weight;
+                @content;
+            }
+        }
+    }
+}
