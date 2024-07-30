@@ -155,13 +155,15 @@
                 @if ($variant == 'duotone') {
                     @extend %icon-font-duotone;
 
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
                     width: 1.25em;
-                    text-align: center;
+                    height: 100%;
 
                     @if ($pseudoElement == 'after') {
                         position: absolute;
-                        top: 50%;
-                        transform: translateY(-50%);
+                        top: 0;
 
                         @if ($after) {
                             right: 0;
