@@ -91,13 +91,14 @@
 ///
 /// @param  {String}  $icon          The name of the icon (e.g. `plus`)
 /// @param  {String}  $variant       The variant to use ("fill", "bold", "regular" (default), "light", "thin" or "duotone")
+/// @param  {Number}  $size  [1em]   The size of the icon.
 /// @param  {Boolean} $after [false] If `true` the icon will be added after, otherwise before.
 ///                                  If the variant is not duotone, the `::before` or `::after` pseudo-elements
 ///                                  will be used according to this parameter, otherwise the icon will be placed
 ///                                  in the right place, but both pseudo-elements will be used.
 /// @content                         Any other properties to be added to the pseudo-element.
 /// @output                          The selected pseudo-element with the requested icon, ready to be displayed.
-@mixin icon($icon, $variant: 'regular', $after: false) {
+@mixin icon($icon, $variant: 'regular', $size: 1em, $after: false) {
     $weight: 400;
 
     @if (meta.type-of($variant) == bool) {
@@ -118,6 +119,12 @@
 
     @if ($variant == 'duotone') {
         position: relative;
+
+        @if ($after) {
+            padding-right: $size * 1.25;
+        } @else {
+            padding-left: $size * 1.25;
+        }
 
         &::before {
             color: $duotone-secondary-color;
@@ -149,27 +156,23 @@
                 @if ($variant == 'duotone') {
                     @extend %icon-font-duotone;
 
-                    display: inline-flex;
-                    align-items: center;
-                    justify-content: center;
-                    width: 1.25em;
-                    height: 100%;
+                    position: absolute;
+                    top: 50%;
+                    width: $size * 1.25;
+                    text-align: center;
+                    transform: translateY(-50%);
 
-                    @if ($pseudoElement == 'after') {
-                        position: absolute;
-                        top: 0;
-
-                        @if ($after) {
-                            right: 0;
-                        } @else {
-                            left: 0;
-                        }
+                    @if ($after) {
+                        right: 0;
+                    } @else {
+                        left: 0;
                     }
                 } @else {
                     @extend %icon-font;
                 }
 
                 content: $icon-code;
+                font-size: $size;
                 font-weight: $weight;
                 @content;
             }
