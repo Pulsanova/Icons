@@ -120,12 +120,12 @@
         position: relative;
 
         &::before {
-            color: $duotone-secondary-color;
+            color: var(--icon-secondary-color, $duotone-secondary-color);
             opacity: $duotone-secondary-opacity;
         }
 
         &::after {
-            color: $duotone-primary-color;
+            color: var(--icon-primary-color, $duotone-primary-color);
         }
 
         @at-root {
@@ -164,7 +164,7 @@
 
                     // stylelint-disable-next-line scss/dollar-variable-first-in-block, order/order
                     $should-be-position-absolute: (
-                        ($after == false and $pseudoElement == 'after') ||
+                        ($after == false and $pseudoElement == 'after') or
                         ($after == true and $pseudoElement == 'before')
                     );
                     @if ($should-be-position-absolute) {
