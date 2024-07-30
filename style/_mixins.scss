@@ -15,7 +15,7 @@
     font-style: normal;
     line-height: 1;
     font-variant: normal;
-    speak: never;
+    speak: none;
     text-transform: none;
     text-rendering: auto;
     word-wrap: normal;
@@ -24,7 +24,15 @@
     // - Enable Ligatures.
     // stylelint-disable-next-line order/properties-order
     letter-spacing: 0;
-    font-feature-settings: 'liga' 1;
+
+    /* stylelint-disable property-no-vendor-prefix, declaration-block-no-duplicate-properties */
+    -webkit-font-feature-settings: 'liga';
+    -moz-font-feature-settings: 'liga=1';
+    -moz-font-feature-settings: 'liga';
+    -ms-font-feature-settings: 'liga' 1;
+    font-feature-settings: 'liga';
+    /* stylelint-enable property-no-vendor-prefix, declaration-block-no-duplicate-properties */
+
     font-variant-ligatures: discretionary-ligatures;
 
     // - Improve font rendering.
@@ -42,7 +50,7 @@
     line-height: 1;
     font-variant: normal;
     text-transform: none;
-    speak: never;
+    speak: none;
 
     // - Improve font rendering.
     -webkit-font-smoothing: antialiased;
@@ -111,11 +119,11 @@
     @if ($variant == 'duotone') {
         position: relative;
 
-        // @if ($after) {
-        //     padding-right: 1.25em;
-        // } @else {
-        //     padding-left: 1.25em;
-        // }
+        @if ($after) {
+            padding-right: 1.25em;
+        } @else {
+            padding-left: 1.25em;
+        }
 
         &::before {
             color: $duotone-secondary-color;
@@ -148,11 +156,11 @@
                 @if ($variant == 'duotone') {
                     @extend %icon-font-duotone;
 
-                    // position: absolute;
-                    // top: 50%;
-                    // width: 1.25em;
-                    // text-align: center;
-                    // transform: translateY(-50%);
+                    position: absolute;
+                    top: 50%;
+                    width: 1.25em;
+                    text-align: center;
+                    transform: translateY(-50%);
 
                     @if ($after) {
                         right: 0;
