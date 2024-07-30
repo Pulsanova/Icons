@@ -127,6 +127,13 @@
         &::after {
             color: $duotone-primary-color;
         }
+
+        @at-root {
+            // stylelint-disable-next-line scss/selector-no-redundant-nesting-selector
+            :where(&) {
+                display: inline-block;
+            }
+        }
     }
 
     @each $pseudoElement in ('before', 'after') {
@@ -149,13 +156,18 @@
                 @if ($variant == 'duotone') {
                     @extend %icon-font-duotone;
 
+                    flex-shrink: 0;
                     display: inline-flex;
-                    align-items: center;
                     justify-content: center;
-                    width: 1.25em;
-                    height: 100%;
+                    width: 1.15em;
+                    vertical-align: middle;
 
-                    @if ($pseudoElement == 'after') {
+                    // stylelint-disable-next-line scss/dollar-variable-first-in-block, order/order
+                    $should-be-position-absolute: (
+                        ($after == false and $pseudoElement == 'after') ||
+                        ($after == true and $pseudoElement == 'before')
+                    );
+                    @if ($should-be-position-absolute) {
                         position: absolute;
                         top: 0;
 
