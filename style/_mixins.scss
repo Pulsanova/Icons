@@ -77,9 +77,6 @@
     @if map.has-key($list, $icon) {
         @return map.get($list, $icon);
     }
-    @if map.has-key($brand-list, $icon) {
-        @return map.get($brand-list, $icon);
-    }
     @return $icon;
 }
 

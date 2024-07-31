@@ -1,6 +1,6 @@
 {
     "name": "@pulsanova/icons",
-    "version": "1.0.7",
+    "version": "1.0.8",
     "description": "An icon set, ready to be used in SCSS (entirely based on Phosphor icons)",
     "style": "style/index.scss",
     "homepage": "https://github.com/Pulsanova/Icons",
