@@ -9,20 +9,21 @@
 
 /// Provide the base code for using the icon font.
 %icon-font {
-    /* stylelint-disable font-family-no-missing-generic-family-keyword */
-    // stylelint-disable-next-line declaration-no-important -- To prevent issues with browser extensions that change fonts.
+    /* stylelint-disable font-family-no-missing-generic-family-keyword, order/properties-order */
+    display: inline-block;
     font-family: Phosphor !important;
+    font-size: var(--icon-size, 1em);
+    font-variant: normal;
     font-style: normal;
     line-height: 1;
-    font-variant: normal;
-    speak: none;
+    vertical-align: middle;
+    speak: none; // stylelint-disable-line scss/declaration-property-value-no-unknown
     text-transform: none;
     text-rendering: auto;
-    word-wrap: normal;
+    overflow-wrap: normal;
     white-space: nowrap;
 
     // - Enable Ligatures.
-    // stylelint-disable-next-line order/properties-order
     letter-spacing: 0;
 
     /* stylelint-disable property-no-vendor-prefix, declaration-block-no-duplicate-properties */
@@ -38,24 +39,23 @@
     // - Improve font rendering.
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    /* stylelint-enable font-family-no-missing-generic-family-keyword */
+    /* stylelint-enable font-family-no-missing-generic-family-keyword, order/properties-order */
 }
 
 %icon-font-duotone {
-    /* stylelint-disable font-family-no-missing-generic-family-keyword */
-    // stylelint-disable-next-line declaration-no-important -- To prevent issues with browser extensions that change fonts.
+    /* stylelint-disable font-family-no-missing-generic-family-keyword, order/properties-order */
     font-family: Phosphor-Duotone !important;
+    font-variant: normal;
     font-weight: 400;
     font-style: normal;
     line-height: 1;
-    font-variant: normal;
     text-transform: none;
-    speak: none;
+    speak: none; // stylelint-disable-line scss/declaration-property-value-no-unknown
 
     // - Improve font rendering.
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    /* stylelint-enable font-family-no-missing-generic-family-keyword */
+    /* stylelint-enable font-family-no-missing-generic-family-keyword, order/properties-order */
 }
 
 //
@@ -126,7 +126,6 @@
         }
 
         @at-root {
-            // stylelint-disable-next-line scss/selector-no-redundant-nesting-selector
             :where(&) {
                 display: inline-block;
             }
