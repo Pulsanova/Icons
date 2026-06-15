@@ -2,6 +2,10 @@
 /// @type String
 $font-root-path: '~@phosphor-icons/web' !default;
 
+/// Base size applied to every icon.
+/// @type Number
+$base-size: 1em !default;
+
 /// Primary color used for duotone icons.
 /// @type Color
 $duotone-primary-color: inherit !default;
@@ -14,7 +18,7 @@ $duotone-secondary-color: inherit !default;
 /// @type Number
 $duotone-secondary-opacity: 0.2 !default;
 
-// Phosphor Icons v2.1.1
+// Phosphor Icons v2.1.2
 /* stylelint-disable scss/dollar-variable-default */
 $list: (
     acorn: '\eb9a',
