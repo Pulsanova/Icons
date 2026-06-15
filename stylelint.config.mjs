@@ -1,0 +1,8 @@
+export default {
+    extends: '@pulsanova/stylelint-config-scss',
+    rules: {
+        'scss/dollar-variable-default': [true, {
+            'ignore': 'local',
+        }],
+    },
+};
